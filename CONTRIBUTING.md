@@ -54,7 +54,7 @@ check various syntax and style things. You can run these locally with:
     export PUPPET_VERSION="~> 5.0"
     bundle exec rake lint
     bundle exec rake validate
-    bundle exec rake rubocop 
+    bundle exec rake rubocop
     ```
 
 ## Running the unit tests
@@ -124,7 +124,7 @@ removed after the test completes. To connect via ssh, perform the following:
     Something similar to the following should print:
 
     ```bash
-    id       name         provider   state   directory                                                                                                            
+    id       name         provider   state   directory
     -------------------------------------------------------------------------------------------------------------------------------
     e86d327  centos-7-x64 virtualbox running /home/me/puppet-corosync/.vagrant/beaker_vagrant_files/centos-7-x64.ym
     ```
