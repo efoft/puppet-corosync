@@ -4,7 +4,7 @@ class corosync::params {
   $authkey_source                      = 'file'
   $authkey                             = '/etc/puppet/ssl/certs/ca.pem'
   $port                                = 5405
-  $bind_address                        = $::ipaddress
+  $bind_address                        = $facts['networking']['ip']
   $force_online                        = false
   $check_standby                       = false
   $log_timestamp                       = false
@@ -26,13 +26,13 @@ class corosync::params {
   $enable_pcsd_service                 = true
   $package_quorum_device               = 'corosync-qdevice'
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       $package_crmsh  = false
       $package_pcs    = true
       $package_fence_agents = true
       $set_votequorum = true
-      if versioncmp($::operatingsystemrelease, '7') >= 0 {
+      if versioncmp($facts['os']['release']['full'], '7') >= 0 {
         $manage_pacemaker_service = true
         $test_corosync_config = true
         $secauth_parameter_mode = '2.x'
@@ -48,14 +48,14 @@ class corosync::params {
       $package_crmsh  = true
       $package_pcs    = false
       $package_fence_agents = false
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Ubuntu': {
-          if versioncmp($::operatingsystemrelease, '14.04') >= 0 {
+          if versioncmp($facts['os']['release']['full'], '14.04') >= 0 {
             $set_votequorum = true
             $manage_pacemaker_service = true
             $secauth_parameter_mode = '2.x'
 
-            if versioncmp($::operatingsystemrelease, '16.04') >= 0 {
+            if versioncmp($facts['os']['release']['full'], '16.04') >= 0 {
               $test_corosync_config = true
             } else {
 
@@ -76,12 +76,12 @@ class corosync::params {
           $package_install_options = undef
         }
         'Debian': {
-          if versioncmp($::operatingsystemrelease, '8') >= 0 {
+          if versioncmp($facts['os']['release']['full'], '8') >= 0 {
             $set_votequorum = true
             $manage_pacemaker_service = true
             $test_corosync_config = true
             $secauth_parameter_mode = '2.x'
-            if versioncmp($::operatingsystemrelease, '8') == 0 {
+            if versioncmp($facts['os']['release']['full'], '8') == 0 {
               $package_install_options = ['-t', 'jessie-backports']
             } else {
               $package_install_options = undef
@@ -105,7 +105,7 @@ class corosync::params {
     }
 
     default: {
-      fail("Unsupported operating system: ${::operatingsystem}")
+      fail("Unsupported operating system: ${facts['os']['name']}")
     }
   }
 
