@@ -126,7 +126,7 @@ Puppet::Type.type(:cs_order).provide(:pcs, parent: PuppetX::Voxpupuli::Corosync:
     items = @property_hash[:second].split(':')
     cmd << items[1]
     cmd << items[0]
-    cmd << @property_hash[:score]
+    cmd << @property_hash[:score] if @resource[:use_score] == true
     cmd << "kind=#{@property_hash[:kind]}"
     cmd << "id=#{@property_hash[:name]}"
     cmd << "symmetrical=#{@property_hash[:symmetrical]}"

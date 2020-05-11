@@ -64,6 +64,14 @@ Puppet::Type.newtype(:cs_order) do
     defaultto 'INFINITY'
   end
 
+  newparam(:use_score, boolean: true, parent: Puppet::Property::Boolean) do
+    desc "If to add a score part to resulting pcs commands. Modern pacemaker
+      version of both 1.1 and 2.0 branches don't have score parameter in rsc_order
+      element so pcs command fails. This property is indended to retain support
+      for those old installation where score is still present but at the same time
+      allows to turn it off for modern versions."
+  end
+
   newproperty(:kind, required_features: :kindness) do
     desc "How to enforce the constraint.
 
